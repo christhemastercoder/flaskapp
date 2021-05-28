@@ -1,7 +1,38 @@
 import logo from './logo.svg';
 import './App.css';
+import React, {useEffect, useState} from 'react'
 
-function App() {
+
+
+// const Clock = () => {
+//   const [time, setTime] = useState(Date())
+//   return(
+//     {time}
+//   )
+// }
+function App() 
+{
+  const [currentTime, setCurrentTime] = useState(0)
+  const [staff, setCurrentStaff] = useState({})
+  const [isLoading, setIsLoading] = useState(true)
+
+  console.log(staff)
+useEffect(() => {
+  fetch('/staff2')
+      .then(response => {
+        response.text().then(responseString => {
+         
+          setCurrentStaff(responseString)
+          setIsLoading(false)
+         
+        })
+  })
+}, [])
+    
+  
+
+
+
   return (
     <div className="App">
       <header className="App-header">
@@ -17,6 +48,9 @@ function App() {
         >
           Learn React
         </a>
+        {/* <p>The current time is {currentTime}</p> */}
+        
+        <p>Staff Member 1: {isLoading ? "Loading..." : staff}</p>
       </header>
     </div>
   );
