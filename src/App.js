@@ -4,30 +4,39 @@ import React, {useEffect, useState} from 'react'
 
 
 
-// const Clock = () => {
-//   const [time, setTime] = useState(Date())
-//   return(
-//     {time}
-//   )
-// }
+const Clock = () => {
+  
+  const [time, setTime] = useState(Date())
+
+  useEffect(() => {
+    setInterval(() => {
+      setTime(Date())
+    }, 1000)
+  }, [])
+
+  return(
+    <p>{time}</p>
+  )
+}
+
+
 function App() 
 {
   const [currentTime, setCurrentTime] = useState(0)
   const [staff, setCurrentStaff] = useState({})
   const [isLoading, setIsLoading] = useState(true)
 
-  console.log(staff)
-useEffect(() => {
-  fetch('/staff2')
-      .then(response => {
-        response.text().then(responseString => {
-         
-          setCurrentStaff(responseString)
-          setIsLoading(false)
-         
-        })
-  })
-}, [])
+    useEffect(() => {
+      fetch('/staff2')
+          .then(response => {
+            response.text().then(responseString => {
+            
+              setCurrentStaff(responseString)
+              setIsLoading(false)
+            
+            })
+      })
+    }, [])
     
   
 
@@ -37,18 +46,13 @@ useEffect(() => {
     <div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-        {/* <p>The current time is {currentTime}</p> */}
+
+        <Clock/>
+      
+        <p>Which staff member would you like to pull up?</p>
+        <button>Member 1</button>
+        <button>Member 2</button>
+        <button>Member 3</button>
         
         <p>Staff Member 1: {isLoading ? "Loading..." : staff}</p>
       </header>
