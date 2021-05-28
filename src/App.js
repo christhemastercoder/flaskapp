@@ -20,26 +20,40 @@ const Clock = () => {
 }
 
 
+
 function App() 
 {
   const [currentTime, setCurrentTime] = useState(0)
-  const [staff, setCurrentStaff] = useState({})
+  const [staff, setCurrentStaff] = useState("")
   const [isLoading, setIsLoading] = useState(true)
+  const [staffNum, setStaffNum] = useState(1)
 
-    useEffect(() => {
-      fetch('/staff2')
-          .then(response => {
-            response.text().then(responseString => {
+    // useEffect(() => {
+    //   fetch('/staff2')
+    //       .then(response => {
+    //         response.text().then(responseString => {
             
-              setCurrentStaff(responseString)
-              setIsLoading(false)
+    //           setCurrentStaff(responseString)
+    //           setIsLoading(false)
             
-            })
-      })
-    }, [])
+    //         })
+    //   })
+    // }, [])
     
-  
-
+    // const memberSearch = (props) => {
+    //   fetch(`/staff${props}`).then(response => {
+    //     response.text().then(responseString => {
+    //       setCurrentStaff(responseString)
+    //       setIsLoading(false)
+    //     })
+    //   })
+    // }
+  useEffect(() => {
+      fetch("/staff" + staffNum).then(response => response.text().then(responseString => {
+        setCurrentStaff(responseString)
+        setIsLoading(false)
+      }))
+  }, [staffNum])
 
 
   return (
@@ -50,11 +64,12 @@ function App()
         <Clock/>
       
         <p>Which staff member would you like to pull up?</p>
-        <button>Member 1</button>
-        <button>Member 2</button>
-        <button>Member 3</button>
+        <button onClick = {() => setStaffNum(1)}>Member 1</button>
+        <button onClick = {() => setStaffNum(2)}>Member 2</button>
+        <button onClick = {() => setStaffNum(3)}>Member 3</button>
         
-        <p>Staff Member 1: {isLoading ? "Loading..." : staff}</p>
+        <p>Staff Member: {isLoading ? "Loading..." : staff}</p>
+        <p>{staffNum}</p>
       </header>
     </div>
   );
