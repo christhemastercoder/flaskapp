@@ -43,7 +43,8 @@ def add_person():
     name = request.form['name']
     age = request.form['age']
     job = request.form['job']
-    DB.addPerson(name, age, job)
+    id = request.form['id']
+    DB.addPerson(name, age, job, id)
     return '', 204
 
 # @app.route('/delPerson', methods = ['DELETE'])

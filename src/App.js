@@ -33,6 +33,10 @@ const NewPerson = () => {
         <label for="job">Position: </label>
         <input type = "text" id = "job" name = "job"/><br></br>
 
+        <label for="id">ID: </label>
+        <input type = "number" id="id" name = "id"/><br></br>
+
+        <input type = "reset" value = "reset"/>
         <input type="submit" value="Submit"></input>
       </form>
 
