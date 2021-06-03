@@ -32,6 +32,9 @@ def getAllPeople():
     data = []
     for row in cursor:
         strform = str(row)
+        strform = strform[1:]
+        strform = strform[:-1]
+        strform = strform.replace("'", "")
         data.append(strform)
     cnxn.commit()
     for i in data:

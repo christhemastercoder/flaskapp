@@ -26,5 +26,4 @@ def add_person():
 
 @app.route('/allPeople')
 def get_all_People():
-    return 'hi bihh'
-    
+    return DB.getAllPeople()

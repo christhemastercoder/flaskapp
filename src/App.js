@@ -85,15 +85,22 @@ const SearchPerson = () => {
 }
 const Empty = () => {
   const [listOfStaff, setListOfStaff] = React.useState([])
+  let index = 1
   React.useEffect(() => 
   {
-    fetch('/allPeople').then(response => response.text().then(res => console.log(res)))
+    fetch('/allPeople').then(response => response.json().then(res => 
+      {
+        setListOfStaff(res)
+        console.log(res)
+        console.log(typeof(res))
+      }))
    
   }, 
   [])
   return(
-    // listOfStaff.map((row) => <li>{row}</li>)    
-    <h1>Hi</h1>
+    listOfStaff.map((row) => <li>{row}</li>
+  )    
+    
   )
 }
 const NotEmpty = (name) => {
