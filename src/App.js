@@ -19,43 +19,88 @@ const Clock = () => {
   )
 }
 
-const NewPerson = () => {
+
+const NewPerson2 = () => {
   return(
-    <div>
-      <p>Add a person</p>
-      <form action="/newPerson" method="post">
-        <label for="name">Full Name: </label>
-        <input type="text" id = "name" name="name"/><br></br>
-        
-        <label for="age">Age: </label>
-        <input type="number" id="age" name="age"/> <br></br>
+    <div className = "flex-container">
+      <div className = "inputFields">
+        <h3>ID</h3>
+        <h3>Name</h3>
+        <h3>Position</h3>
+        <h3>Age</h3>
+      </div>
 
-        <label for="job">Position: </label>
-        <input type = "text" id = "job" name = "job"/><br></br>
+      <div className = "Input-Area">
+        <form action="/newPerson" method = "post" className = "actualInput">
+          <input type="number" id="id" name="id"/> <br></br>
 
-        <label for="id">ID: </label>
-        <input type = "number" id="id" name = "id"/><br></br>
+          <input type="text" id="name" name="name"/> <br></br>
 
-        <input type = "reset" value = "reset"/>
-        <input type="submit" value="Submit"></input>
-      </form>
+          <input type="text" id="position" name="position"/> <br></br>
 
+          <input type="number" id="age" name="age"/>
+
+          <div className = "submission">
+          <button type = "submit" value="subimt">Submit</button>
+          <button type = "reset" value = "reset">Reset</button>
+        </div>
+
+        </form>
+      </div>
     </div>
   )
 }
 
-// const DelPerson = () => {
-//   return(
-//     <div>
-//       <p>Enter the ID of the person you want removed from the database</p>
-//       <form action="/delPerson" method="delete">
-//         <label for="id">ID: </label>
-//         <input type="number" id="id" name="id"/>
-//         <input type="submit" value="Submit"/>
-//       </form>
-//     </div>
-//   )
-// }
+const SearchPerson = () => {
+  const [name, setName] = React.useState('')
+  const [empty, setEmpty] = React.useState(true)
+
+  const handleSearch = (name) => {
+    setName(name)
+    if(name === '')
+    {
+      setEmpty(true)
+      console.log('empty')
+    }
+    else
+    {
+      setEmpty(false)
+      console.log('not empty')
+    }
+  }
+  React.useEffect(() => {
+
+  }, [])
+
+  return(
+    <div>
+      <input type="text" name="name" placeholder = "Enter name here" onChange = {(event) => handleSearch(event.target.value)}></input>
+      {/* {empty ? 
+      (<Empty/>) : 
+      (<NotEmpty name = {name}/>) 
+      } */}
+      <Empty/>
+    </div>
+  )
+}
+const Empty = () => {
+  const [listOfStaff, setListOfStaff] = React.useState([])
+  React.useEffect(() => 
+  {
+    fetch('/allPeople').then(response => response.text().then(res => console.log(res)))
+   
+  }, 
+  [])
+  return(
+    // listOfStaff.map((row) => <li>{row}</li>)    
+    <h1>Hi</h1>
+  )
+}
+const NotEmpty = (name) => {
+
+}
+
+
 
 function App() 
 {
@@ -66,33 +111,12 @@ function App()
   const [wantTime, setWantTime] = useState("")
 
   
-  useEffect(() => {
-      fetch("/staff" + staffNum).then(response => response.text().then(responseString => {
-        setIsLoading(false)
-        setCurrentStaff(responseString)
-      }))
-  }, [staffNum])
-
-
-
 
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-
-        <Clock/>
-      
-        <NewPerson/>
-        
-        <p>Which staff member would you like to pull up?</p>
-        <button onClick = {() => setStaffNum(1)}>Member 1</button>
-        <button onClick = {() => setStaffNum(2)}>Member 2</button>
-        <button onClick = {() => setStaffNum(3)}>Member 3</button>
-        <p>Staff Member: {isLoading ? "Loading..." : staff}</p>
-
-      
-        <p>{staffNum}</p>
+          <SearchPerson/>
+          <NewPerson2/>
       </header>
     </div>
   );

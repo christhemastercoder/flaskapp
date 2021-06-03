@@ -1,5 +1,5 @@
 import pyodbc as po
-
+from flask import jsonify
 #Connection Variables
 server = '127.0.0.1,1433'
 database = 'People'
@@ -19,7 +19,6 @@ def getMemDB(id):
     return res
 
 def addPerson(name, age, position, id):
-    last_id = cursor.execute("SELECT MAX(id) FROM [People].[dbo].[Staff]")
     names = str(name)
     positions = str(position)
     age = str(age)
@@ -27,6 +26,17 @@ def addPerson(name, age, position, id):
     cursor.execute("""EXEC dbo.AddEmployee @Name=?, @Position=?, @ID=?, @AGE=?""", (names, positions, ID, age))  
     cnxn.commit()
     return
+
+def getAllPeople():
+    cursor.execute("""EXEC dbo.Get_Everybody""")
+    data = []
+    for row in cursor:
+        strform = str(row)
+        data.append(strform)
+    cnxn.commit()
+    for i in data:
+        print(i)
+    return jsonify(data)
 
 
 # def removePerson(id):

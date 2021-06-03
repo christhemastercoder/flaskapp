@@ -14,41 +14,17 @@ def get_curr_time():
 def origin():
     return 'hello world'
 
-# @app.route('/staff1')
-# def get_staff():
-#     return p1
-
-# @app.route('/staff2')
-# def get_staff2():
-#     return p2
-
-# @app.route('/staff3')
-# def get_staff3():
-#     return p3
-
-@app.route('/staff1')
-def get_staff1():
-    return DB.getMemDB(1)
-
-@app.route('/staff2')
-def get_staff2():
-    return DB.getMemDB(2)
-
-@app.route('/staff3')
-def get_staff3():
-    return DB.getMemDB(3)
     
 @app.route('/newPerson', methods = ['POST'])
 def add_person():
     name = request.form['name']
     age = request.form['age']
-    job = request.form['job']
+    job = request.form['position']
     id = request.form['id']
     DB.addPerson(name, age, job, id)
     return '', 204
 
-# @app.route('/delPerson', methods = ['DELETE'])
-# def remove_person():
-#     id = request.form['id']
-#     # DB.removePerson(id)
-#     return '', 204
+@app.route('/allPeople')
+def get_all_People():
+    return 'hi bihh'
+    
