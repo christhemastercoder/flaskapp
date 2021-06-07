@@ -27,20 +27,13 @@ def addPerson(name, age, position, id):
     cnxn.commit()
     return
 
-def getAllPeople():
-    cursor.execute("""EXEC dbo.Get_Everybody""")
+def getPerson(name):
+    cursor.execute("""EXEC dbo.GetPerson @Name=?""", (name))
     data = []
     for row in cursor:
-        strform = str(row)
-        strform = strform[1:]
-        strform = strform[:-1]
-        strform = strform.replace("'", "")
+        strform = str(row[0]) + ", " + str(row[1]) + ", " + str(row[2])
         data.append(strform)
     cnxn.commit()
-    for i in data:
-        print(i)
     return jsonify(data)
 
-
-# def removePerson(id):
 

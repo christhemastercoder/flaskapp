@@ -3,7 +3,7 @@ import time
 import pyodbc as po
 # from dbConnector import p1, p2, p3
 import user_db as DB
-
+import user_db2 as DBB
 app = Flask(__name__)
 
 @app.route('/time')
@@ -26,4 +26,10 @@ def add_person():
 
 @app.route('/allPeople')
 def get_all_People():
-    return DB.getAllPeople()
+    return DBB.getAllPeople()
+
+@app.route('/getSpecificStaff')
+def getSpecificStaff():
+    name = request.args.get('name')
+    return DB.getPerson(name)
+
