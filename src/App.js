@@ -4,23 +4,11 @@ import React, {useEffect, useState} from 'react'
 
 
 
-const Clock = () => {
-  
-  const [time, setTime] = useState(Date())
+const NewPerson2 = (props) => {
 
-  useEffect(() => {
-    setInterval(() => {
-      setTime(Date())
-    }, 1000)
-  }, [])
-
-  return(
-    <p>{time}</p>
-  )
-}
-
-
-const NewPerson2 = () => {
+  const handleSubmit = () => {
+    props.updater(!props.list)
+  }
   return(
     <div className = "flex-container">
       <div className = "inputFields">
@@ -31,14 +19,14 @@ const NewPerson2 = () => {
       </div>
 
       <div className = "Input-Area">
-        <form action="/newPerson" method = "post" className = "actualInput">
-          <input type="number" id="id" name="id"/> <br></br>
+        <form action="/newPerson" method = "post" className = "actualInput" onSubmit = {() => handleSubmit()}>
+          <input type="number" id="id" name="id" placeholder="Enter ID"/> <br></br>
 
-          <input type="text" id="name" name="name"/> <br></br>
+          <input type="text" id="name" name="name" placeholder="Enter Name"/> <br></br>
 
-          <input type="text" id="position" name="position"/> <br></br>
+          <input type="text" id="position" name="position" placeholder="Enter Position"/> <br></br>
 
-          <input type="number" id="age" name="age"/>
+          <input type="number" id="age" name="age" placeholder="Enter Age"/>
 
           <div className = "submission">
           <button type = "submit" value="subimt">Submit</button>
@@ -51,7 +39,7 @@ const NewPerson2 = () => {
   )
 }
 
-const SearchPerson = () => {
+const SearchPerson = (props) => {
   const [name, setName] = React.useState('')
   const [empty, setEmpty] = React.useState(true)
 
@@ -68,27 +56,31 @@ const SearchPerson = () => {
       console.log('not empty')
     }
   }
-  React.useEffect(() => {
-
-  }, [])
+ 
 
   return(
     <div>
-      <input type="text" name="name" placeholder = "Enter name here" onChange = {(event) => handleSearch(event.target.value)}></input>
-      {/* {empty ? 
+      <input type="text" name="name" placeholder = "Type to Search" 
+      onChange = {(event) => handleSearch(event.target.value)}
+      style = {{width:'98%'}}
+      />
+      {empty ? 
       (<Empty/>) : 
       (<NotEmpty name = {name}/>) 
-      } */}
-      <Empty/>
+      }
+
+      {/* <Empty /> */}
+     
     </div>
   )
 }
-const Empty = () => {
+const Empty = (props) => 
+{
   const [listOfStaff, setListOfStaff] = React.useState([])
-  let index = 1
+  
   React.useEffect(() => 
   {
-    fetch('/allPeople').then(response => response.json().then(res => 
+    fetch('/allPeople2').then(response => response.json().then(res => 
       {
         setListOfStaff(res)
         console.log(res)
@@ -96,34 +88,86 @@ const Empty = () => {
       }))
    
   }, 
-  [])
+  [props.list])
+
   return(
-    listOfStaff.map((row) => <li>{row}</li>
-  )    
-    
+    <div>
+    <table>
+      <tr>
+        <th>Name</th>
+        <th>Age</th>
+        <th>Position</th>
+        <th>ID</th>
+      </tr>
+      {listOfStaff.map((row) => 
+      <tr>
+        <td>{row.name}</td>
+        <td>{row.age}</td>
+        <td>{row.position}</td>
+        <td>{row.id}</td>
+      </tr>
+      ) }
+    </table>
+
+
+    </div>
   )
 }
-const NotEmpty = (name) => {
 
+
+const NotEmpty = (props) => 
+{
+  const [person, setPerson] = React.useState(['No One Found'])
+  useEffect(() => {
+    fetch(`/getSpecificStaff?name=${props.name}`).then(response => response.json().then(res => {
+      setPerson(res)
+    }))
+  }, [props.name])
+
+  return(
+    <div>
+    <table>
+      <tr>
+        <th>Name</th>
+        <th>Age</th>
+        <th>Position</th>
+        <th>ID</th>
+      </tr>
+      {person.map((row) => 
+      <tr>
+        <td>{row.name}</td>
+        <td>{row.age}</td>
+        <td>{row.position}</td>
+        <td>{row.id}</td>
+      </tr>
+      ) }
+    </table>
+
+
+    </div>
+      
+  )
+  
 }
 
 
 
 function App() 
 {
-  const [currentTime, setCurrentTime] = useState(0)
-  const [staff, setCurrentStaff] = useState("")
-  const [isLoading, setIsLoading] = useState(true)
-  const [staffNum, setStaffNum] = useState(1)
-  const [wantTime, setWantTime] = useState("")
+  const [updateList, setUpdateList] = React.useState(false)  
 
-  
+  const handleChange = (props) => {
+    setUpdateList(props)
+  }
+
+
 
   return (
     <div className="App">
       <header className="App-header">
-          <SearchPerson/>
-          <NewPerson2/>
+          <SearchPerson list = {updateList} updater = {setUpdateList}/>
+          <br></br>
+          <NewPerson2 list = {updateList} updater = {handleChange}/>
       </header>
     </div>
   );
