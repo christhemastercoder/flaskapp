@@ -20,3 +20,16 @@ def getAllPeople():
         data.append(strform)
     cnxn.commit()
     return jsonify(data)
+
+
+def getAllPeople2():
+    cursor.execute("""EXEC dbo.Get_Everybody""")
+    data = []
+    for row in cursor:
+        tempobj = {
+            "name" : str(row[0]),
+            "age": row[1],
+            "position": str(row[2])
+        }
+        data.append(tempobj)
+    return jsonify(data)

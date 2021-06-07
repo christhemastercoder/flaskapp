@@ -33,3 +33,6 @@ def getSpecificStaff():
     name = request.args.get('name')
     return DB.getPerson(name)
 
+@app.route('/allPeople2')
+def getPpl2():
+    return DBB.getAllPeople2()
