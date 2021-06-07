@@ -31,8 +31,13 @@ def getPerson(name):
     cursor.execute("""EXEC dbo.GetPerson @Name=?""", (name))
     data = []
     for row in cursor:
-        strform = str(row[0]) + ", " + str(row[1]) + ", " + str(row[2])
-        data.append(strform)
+        tempobj = {
+            "name" : str(row[0]),
+            "age" : row[3],
+            "position" : str(row[2]),
+            "id":row[1]
+        }
+        data.append(tempobj)
     cnxn.commit()
     return jsonify(data)
 

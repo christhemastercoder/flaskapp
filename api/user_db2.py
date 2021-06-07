@@ -28,8 +28,9 @@ def getAllPeople2():
     for row in cursor:
         tempobj = {
             "name" : str(row[0]),
-            "age": row[1],
-            "position": str(row[2])
+            "age": row[3],
+            "position": str(row[2]),
+            "id":row[1]
         }
         data.append(tempobj)
     return jsonify(data)
